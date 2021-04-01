@@ -1,9 +1,9 @@
 let canvas = document.getElementById("snake");
 let context = canvas.getContext("2d");
+var gauge = document.getElementById("points");
+var ctx = gauge.getContext("2d");
 let box = 32;
 let snake = [];
-let snakeupsection = []; //This will map the direction of previous section to help the draw
-let snakedownsection = []; //This will map the direction of next section to help the draw
 
 
 var tile_sheet = new Image();
@@ -23,6 +23,13 @@ let food = {
 function CreateBG() {
     context.fillStyle = "lightgreen";
     context.fillRect(0,0,16*box,16*box);
+}
+
+function PointsSys() {
+    ctx.clearRect(0, 0, gauge.width, gauge.height);
+    ctx.font = "15px Arial";
+    ctx.strokeText("Points:", 10, 15);   
+    ctx.strokeText(snake.length, 70, 15);   
 }
 
 function CreateSnake(){
@@ -120,6 +127,7 @@ function InitGame(){
     CreateBG();
     CreateSnake();
     drawFood();
+    PointsSys();
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
 
@@ -128,11 +136,6 @@ function InitGame(){
     if(direction=="up") snakeY -=box;
     if(direction=="down") snakeY +=box;
 
- //   if(direction=="right") snakeupsection +=1;
-  //  if(direction=="left") snakeupsection +=1;
-   // if(direction=="up") snakeupsection +=1;
-  //  if(direction=="down") snakeupsection +=1;
-
     if (snakeX != food.x || snakeY != food.y){
         snake.pop();
     }
@@ -140,14 +143,11 @@ function InitGame(){
         food.y = Math.floor(Math.random()*15+1)*box;
 
     }
-    
-
     let newHead = {
         x: snakeX,
         y: snakeY
     }
     snake.unshift(newHead);
-
 }
 
 let game = setInterval(InitGame,100);
